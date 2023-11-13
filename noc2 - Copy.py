@@ -251,7 +251,8 @@ try:
 
             period = max(buffer_delay,sa_delay,xbar_delay)
             
-
+            # print("Enter 0 to run in XY & 1 to run in YX ")
+            # algo = int(input())
             algo = 0 # 0 for xy | 1 for yx
 
             total = 0
