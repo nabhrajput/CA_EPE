@@ -1,4 +1,4 @@
-#import txt_Converter as conv
+import txt_Converter as conv
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import sys
@@ -13,7 +13,7 @@ try:
                 self.switch_allocator = []
 
             def isempty(self):
-                if((self.input_buffer == []) and (self.crossbar== []) and (self.switch_allocator == [])):
+                if((len(self.input_buffer) == 0) and (len(self.switch_allocator) == 0) and (len(self.crossbar) == 0)):
                     return True
                 return False
 
@@ -62,15 +62,20 @@ try:
 
             def update(self,next_id,allrouter):
                 nextrouter = allrouter[next_id]
+                print(f"This = {self.router_id} , Next = {nextrouter.router_id}")
                 if(len(self.crossbar) != 0):
                     val = self.crossbar.pop(0)
                     nextrouter.input_buffer.append(val)
+
                 if(len(self.switch_allocator) != 0):
                     val = self.switch_allocator.pop(0)
                     self.crossbar.append(val)
+
                 if(len(self.input_buffer) != 0):
                     val = self.input_buffer.pop(0)
                     self.switch_allocator.append(val)
+
+                print(f"{self.router_id} Updated")
 
             def is_destination_flit(self,des):
                 if(self.router_id == int(des)):
@@ -79,7 +84,7 @@ try:
 
         if __name__ == '__main__':
             def xy1(flit_details,curr):
-                dest=int(flit_details[1])
+                dest=int(flit_details[2])
                 curr_row=curr//3
                 dest_row=dest//3
                 curr_col=curr%3
@@ -101,7 +106,7 @@ try:
                 return next_id
             
             def yx1(flit_details,curr):
-                dest = int(flit_details[1])
+                dest = int(flit_details[2])
                 curr_row = curr // 3
                 dest_row = dest // 3
                 curr_col = curr % 3
@@ -170,7 +175,7 @@ try:
                 return temp1[3][-2:] == temp2[3][-2:]
             try:
                 flagSarva = 0
-                #conv.run()
+                conv.run()
                 with open('traffic.txt', 'r') as file:
                     lines = file.readlines()
                     eachline2 = []
@@ -261,16 +266,15 @@ try:
                 for i in range(0,len(traffic_file)):
                     if(int(traffic_file[i][0]) == clock):
                         flits_on_that_clock.append(traffic_file[i])
-
-                clock_wise_flits[clock] = flits_on_that_clock
+                if(flits_on_that_clock != []):
+                    clock_wise_flits[clock] = flits_on_that_clock
                 clock += 1
-
 
             clock = 1 #defining the clock
             while(clock <= lastclock or (not all_empty(all_routers))):
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
                     flits_on_that_clock = clock_wise_flits[clock] #list of flits to be injected on this clock
-                    # print(flits_on_that_clock)
+                    
                     i = 8
                     while(i >= 0): #to update the the routers
                         r = all_routers[i] # Rth router
@@ -278,7 +282,7 @@ try:
                         for j in range(0,len(flits_on_that_clock)):
                             if(i == int(flits_on_that_clock[j][1])): # router_no == flit_src
                                 flits_on_this_router.append(flits_on_that_clock[j])
-                        # print(f"Router = {i} : {flits_on_this_router}")
+                        
                         #now we have number of flits to be injected at this particular source at this particular cycle
                         '''Case 1 : if the router is not empty 
                                 step 1 : update the already existing flits
