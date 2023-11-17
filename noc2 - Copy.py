@@ -2,6 +2,8 @@ import txt_Converter as conv
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import sys
+import random
+
 try:
     with open('Log_File.txt', 'w') as output_file:
         sys.stdout = output_file
@@ -83,6 +85,10 @@ try:
                 return False
 
         if __name__ == '__main__':
+            
+            def generate_gaussian_delays(mean, std_dev, count):
+                return [random.gauss(mean, std_dev) for _ in range(count)]
+            
             def xy1(flit_details,curr):
                 dest=int(flit_details[2])
                 curr_row=curr//3
