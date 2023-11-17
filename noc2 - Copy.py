@@ -4,7 +4,7 @@ from reportlab.pdfgen import canvas
 import sys
 try:
     with open('Log_File.txt', 'w') as output_file:
-        # sys.stdout = output_file
+        sys.stdout = output_file
         class Router:
             def __init__(self, router_id):
                 self.router_id = router_id
@@ -336,6 +336,8 @@ try:
 
                 clock += 1
                 total += period
+
+                #emergency button
                 if(clock == 20):
                     print("forcefull stop")
                     exit()
@@ -473,7 +475,7 @@ try:
             #     total += period
 
             
-    # sys.stdout = sys.__stdout__
+    sys.stdout = sys.__stdout__
 
     print("Output is stored in a file name : 'Log_File.txt'")
 
