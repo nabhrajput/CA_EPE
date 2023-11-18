@@ -8,11 +8,14 @@ try:
     with open('Log_File.txt', 'w') as output_file:
         sys.stdout = output_file
         class Router:
-            def __init__(self, router_id):
+            def __init__(self,router_id,bd,sd,cd):
                 self.router_id = router_id
                 self.input_buffer = []
                 self.crossbar = []
                 self.switch_allocator = []
+                self.buffer_delay = bd
+                self.switch_allocator_delay = sd
+                self.crossbar_delay = cd
 
             def isempty(self):
                 if((len(self.input_buffer) == 0) and (len(self.switch_allocator) == 0) and (len(self.crossbar) == 0)):
@@ -64,7 +67,6 @@ try:
 
             def update(self,next_id,allrouter):
                 nextrouter = allrouter[next_id]
-                print(f"This = {self.router_id} , Next = {nextrouter.router_id}")
                 if(len(self.crossbar) != 0):
                     val = self.crossbar.pop(0)
                     nextrouter.input_buffer.append(val)
@@ -77,16 +79,16 @@ try:
                     val = self.input_buffer.pop(0)
                     self.switch_allocator.append(val)
 
-                print(f"{self.router_id} Updated")
-
             def is_destination_flit(self,des):
                 if(self.router_id == int(des)):
                     return True
                 return False
 
         if __name__ == '__main__':
-            
-            def generate_gaussian_delays(mean, std_dev, count):
+
+            def generate_gaussian_delays(mean, std_dev, count,run_mode):
+                if(run_mode == 0 ):
+                    return [float(mean) for _ in range(count)]
                 return [random.gauss(mean, std_dev) for _ in range(count)]
             
             def xy1(flit_details,curr):
@@ -231,6 +233,7 @@ try:
                 with open('delays.txt','r') as file1:
                     line1 = file1.readline()
                     line1 = line1.split()
+                    mean_delays = [float(delay) for delay in line1]
                     line2 = []
                     delay_dic = {0 : 'Input Buffer' , 1 : 'Switch Allocator' , 2 : 'CrossBar' }
                     for i in range(0,len(line1)):
@@ -253,14 +256,27 @@ try:
             sa_delay = delay_file[1]
             xbar_delay = delay_file[2]
 
-            all_routers = {i : Router(i) for i in range(0,9)}
+            # print("Enter 0 to run in XY & 1 to run in YX ")
+            # algo = int(input())
+            # print("Enter 0 to run in PVA & 1 to run in PVS ")
+            # run_mode = int(input())
+            algo = 0 # 0 for xy | 1 for yx
+            run_mode = 1 # 0 for PVA | 1 for PVS
+
+            num_routers = 9
+            buffer_delays = generate_gaussian_delays(mean_delays[0], mean_delays[0]*0.1, num_routers,run_mode)
+            sa_delays = generate_gaussian_delays(mean_delays[1], mean_delays[1]*0.1, num_routers,run_mode)
+            xbar_delays = generate_gaussian_delays(mean_delays[2], mean_delays[2]*0.1, num_routers,run_mode)
+
+            all_routers = {i : Router(i,buffer_delays[i],sa_delays[i],xbar_delays[i]) for i in range(0,9)}
+            
+            #These line are here so that we can check how the delaysa being assigned
+            # for i in range(0,9):
+            #     print(f"Router ID : {i} with BD = {all_routers[i].buffer_delay} : SA {all_routers[i].switch_allocator_delay} : XD : {all_routers[i].crossbar_delay}")
+            # exit()
 
             period = max(buffer_delay,sa_delay,xbar_delay)
             
-            # print("Enter 0 to run in XY & 1 to run in YX ")
-            # algo = int(input())
-            algo = 0 # 0 for xy | 1 for yx
-
             total = 0
             flit_time = []
             bubble_sort(traffic_file,len(traffic_file))

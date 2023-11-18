@@ -45,8 +45,6 @@ CrossBar Value : None
 
 ---------------------------------------------------------------------------------------------------------
 
-This = 1 , Next = 4
-1 Updated
 At clock cycle: 2 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -94,8 +92,6 @@ CrossBar Value : None
 
 ---------------------------------------------------------------------------------------------------------
 
-This = 1 , Next = 4
-1 Updated
 At clock cycle: 3 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -143,10 +139,6 @@ CrossBar Value : None
 
 ---------------------------------------------------------------------------------------------------------
 
-This = 4 , Next = 5
-4 Updated
-This = 1 , Next = 4
-1 Updated
 At clock cycle: 4 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -194,10 +186,6 @@ CrossBar Value : None
 
 ---------------------------------------------------------------------------------------------------------
 
-This = 4 , Next = 5
-4 Updated
-This = 1 , Next = 4
-1 Updated
 At clock cycle: 5 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -246,10 +234,6 @@ CrossBar Value : None
 ---------------------------------------------------------------------------------------------------------
 
 No injection Done of clock = 6
-This = 4 , Next = 5
-4 Updated
-This = 1 , Next = 4
-1 Updated
 At clock cycle: 6 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -298,8 +282,6 @@ CrossBar Value : None
 ---------------------------------------------------------------------------------------------------------
 
 No injection Done of clock = 7
-This = 4 , Next = 5
-4 Updated
 At clock cycle: 7 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -348,8 +330,6 @@ CrossBar Value : None
 ---------------------------------------------------------------------------------------------------------
 
 No injection Done of clock = 8
-This = 4 , Next = 7
-4 Updated
 At clock cycle: 8 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -398,8 +378,6 @@ CrossBar Value : None
 ---------------------------------------------------------------------------------------------------------
 
 No injection Done of clock = 9
-This = 4 , Next = 5
-4 Updated
 At clock cycle: 9 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -448,8 +426,6 @@ CrossBar Value : None
 ---------------------------------------------------------------------------------------------------------
 
 No injection Done of clock = 10
-This = 4 , Next = 7
-4 Updated
 At clock cycle: 10 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -498,8 +474,6 @@ CrossBar Value : None
 ---------------------------------------------------------------------------------------------------------
 
 No injection Done of clock = 11
-This = 4 , Next = 7
-4 Updated
 At clock cycle: 11 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
