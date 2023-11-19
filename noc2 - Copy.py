@@ -295,6 +295,35 @@ try:
 
             clock = 1 #defining the clock
             while(clock <= lastclock or (not all_empty(all_routers))):
+                pending=[]
+
+                
+                for i in all_routers:
+                    curr_flit_details = all_routers[i].getflit()
+                    
+                    if(all_routers[i].isempty()):
+                        pass
+                    elif(len(all_routers[i].crossbar)!=0):
+                        next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
+                        if(all_routers[i].is_destination_flit(curr_flit_details[2])):
+                            all_routers[i].receive()
+                        
+                        elif(next_r>i):
+                            pending.append(all_routers[i])
+                        else:
+                            all_routers[i].update(next_r,all_routers)
+
+                    else:
+                        next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
+                        all_routers[i].update(next_r,all_routers)
+
+
+                for i in pending:
+                    curr_flit_details = i.getflit()
+                    next_r = xy1(curr_flit_details,i.router_id) if (algo == 0) else yx1(curr_flit_details,i.router_id)
+                    i.update(next_r,all_routers)
+
+
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
                     flits_on_that_clock = clock_wise_flits[clock] #list of flits to be injected on this clock
                     
@@ -315,11 +344,11 @@ try:
                         if(not r.isempty()): 
                             curr_flit_details = r.getflit()
 
-                            if(r.is_destination_flit(curr_flit_details[2])):
-                                r.receive()
-                            else:
-                                next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                                r.update(next_r,all_routers)
+                            # if(r.is_destination_flit(curr_flit_details[2])):
+                            #     r.receive()
+                            # else:
+                            #     next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
+                            #     r.update(next_r,all_routers)
 
                             while(len(flits_on_this_router) != 0):
                                 r.inject(flits_on_this_router.pop(0))
@@ -329,22 +358,22 @@ try:
 
                         i -=1 
 
-                else: # indicator that flit has to be injected in this cycle (flits_on_that_clock == None)
-                    print(f"No injection Done of clock = {clock}")
-                    i = 8
-                    while(i >= 0):
-                        r = all_routers[i]
+                # else: # indicator that flit has to be injected in this cycle (flits_on_that_clock == None)
+                #     print(f"No injection Done of clock = {clock}")
+                #     i = 8
+                #     while(i >= 0):
+                #         r = all_routers[i]
 
-                        if(not r.isempty()):
-                            curr_flit_details = r.getflit()
+                #         if(not r.isempty()):
+                #             curr_flit_details = r.getflit()
                             
-                            if(r.is_destination_flit(int(curr_flit_details[2]))):
-                                r.receive()
-                            else:
-                                next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                                r.update(next_r,all_routers)
+                #             if(r.is_destination_flit(int(curr_flit_details[2]))):
+                #                 r.receive()
+                #             else:
+                #                 next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
+                #                 r.update(next_r,all_routers)
 
-                        i -= 1
+                #         i -= 1
 
                 j = 0 
                 while j <= 8:
