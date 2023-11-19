@@ -202,18 +202,22 @@ try:
                         src2, des2, flit2 = temp2[1], temp2[2], temp2[3]
                         src3, des3, flit3 = temp3[1], temp3[2], temp3[3]
 
+                        #Error handing if Source is Same as Destination
                         if src1 == des1 or src2 == des2 or src3 == des3:
                             print(f"Error in lines {line_number}, {line_number + 1}, {line_number + 2}: Source can't be the same as the destination.")
                             flagSarva = 1
 
+                        #Error handing if Router Id is not given in range of 0 to 8
                         if (int(src1) not in range(0,9)) or (int(src2) not in range(0,9)) or (int(src3) not in range(0,9)) or (int(des1) not in range(0,9)) or (int(des2) not in range(0,9)) or(int(des3) not in range(0,9)):
                             print(f"Error in lines {line_number}, {line_number + 1}, {line_number + 2}: Invalid Router ID")
                             flagSarva = 1  
 
+                        #Error handing if We don't have a valid flit
                         if (not is_valid_flit_type(flit1)) or (not is_valid_flit_type(flit2)) or (not is_valid_flit_type(flit3)):
                             print(f"Error in lines {line_number}, {line_number + 1}, {line_number + 2}: Invalid flit type.")
                             flagSarva = 1
 
+                        #Error handing If mutiple flits of same type are given
                         if check_last_two_digits(temp1, temp2) or check_last_two_digits(temp2, temp3) or check_last_two_digits(temp1, temp3):
                             print(f"Error in lines {line_number}, {line_number + 1}, {line_number + 2}: Last two digits match.")
                             flagSarva = 1
@@ -260,6 +264,7 @@ try:
             # algo = int(input())
             # print("Enter 0 to run in PVA & 1 to run in PVS ")
             # run_mode = int(input())
+
             algo = 0 # 0 for xy | 1 for yx
             run_mode = 1 # 0 for PVA | 1 for PVS
 
@@ -281,23 +286,31 @@ try:
             flit_time = []
             bubble_sort(traffic_file,len(traffic_file))
 
-            clock_wise_flits = {}
+            clock_wise_flits = {} # keep a record what are flits to be added at a particular clock
             clock = 1
-            lastclock = int(traffic_file[len(traffic_file) - 1][0])
+
+            lastclock = int(traffic_file[len(traffic_file) - 1][0]) #last clock of injection 
             while(clock <= lastclock):
                 flits_on_that_clock = []
                 for i in range(0,len(traffic_file)):
-                    if(int(traffic_file[i][0]) == clock):
-                        flits_on_that_clock.append(traffic_file[i])
+                    if(int(traffic_file[i][0]) == clock): #this is clock of traffic file is injected on this particular clock cycle
+                        flits_on_that_clock.append(traffic_file[i]) 
                 if(flits_on_that_clock != []):
-                    clock_wise_flits[clock] = flits_on_that_clock
+                    clock_wise_flits[clock] = flits_on_that_clock 
                 clock += 1
 
+
+            '''Logic :
+                1. iterate on clock
+                2. for each clock iterate on every router 
+                3. if it is a clase of forward flow we will do it later in the second loop. For now we'll mark that router as pending.
+                4. in case of backward flow it is done in the first loop itself 
+                5. We have made injection as an independent process , we'll inject new flits when all the updatation is done (parallel injection enabled)
+                '''
             clock = 1 #defining the clock
             while(clock <= lastclock or (not all_empty(all_routers))):
                 pending=[]
-
-                
+    
                 for i in all_routers:
                     curr_flit_details = all_routers[i].getflit()
                     
@@ -334,46 +347,12 @@ try:
                         for j in range(0,len(flits_on_that_clock)):
                             if(i == int(flits_on_that_clock[j][1])): # router_no == flit_src
                                 flits_on_this_router.append(flits_on_that_clock[j])
-                        
-                        #now we have number of flits to be injected at this particular source at this particular cycle
-                        '''Case 1 : if the router is not empty 
-                                step 1 : update the already existing flits
-                                step 2 : inject the new flits
-                            Case 2 : the router is already empty (there is no need for any updation)
-                                step 1 : Directly Inject the flits'''
-                        if(not r.isempty()): 
-                            curr_flit_details = r.getflit()
 
-                            # if(r.is_destination_flit(curr_flit_details[2])):
-                            #     r.receive()
-                            # else:
-                            #     next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                            #     r.update(next_r,all_routers)
-
-                            while(len(flits_on_this_router) != 0):
-                                r.inject(flits_on_this_router.pop(0))
-                        else:
-                            while(len(flits_on_this_router) != 0):
-                                r.inject(flits_on_this_router.pop(0))
+                                                
+                        while(len(flits_on_this_router) != 0):
+                            r.inject(flits_on_this_router.pop(0))
 
                         i -=1 
-
-                # else: # indicator that flit has to be injected in this cycle (flits_on_that_clock == None)
-                #     print(f"No injection Done of clock = {clock}")
-                #     i = 8
-                #     while(i >= 0):
-                #         r = all_routers[i]
-
-                #         if(not r.isempty()):
-                #             curr_flit_details = r.getflit()
-                            
-                #             if(r.is_destination_flit(int(curr_flit_details[2]))):
-                #                 r.receive()
-                #             else:
-                #                 next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                #                 r.update(next_r,all_routers)
-
-                #         i -= 1
 
                 j = 0 
                 while j <= 8:
@@ -392,139 +371,6 @@ try:
                 if(clock == 20):
                     print("forcefull stop")
                     exit()
-
-
-                        
-
-
-
-            
-            
-            # while((not all_empty(all_routers)) or len(traffic_file) != 0):
-            #     curr = ispresent(clock,traffic_file)
-
-            #     if(curr != []): #traffic file not empty
-            #         traffic_file.remove(curr)
-
-            #         clk_cycle = int(curr[0])
-            #         src = int(curr[1])
-            #         des = int(curr[2])
-            #         flit = curr[3]
-
-            #         flit_details = [src,des,flit]
-
-            #         i = 8
-            #         while(i >= 0):
-            #             r = all_routers[i]
-
-            #             if(i != src):
-            #                 if(not r.isempty()):
-            #                     curr_flit_details = r.getflit()
-            #                     if(curr_flit_details[0]>curr_flit_details[1]):
-            #                         i-=1
-            #                         continue
-            #                     next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-            #                     r.update(next_r,all_routers)
-
-            #             else:
-            #                 if(not r.isempty()):
-            #                     if(src>des):
-            #                         i-=1
-            #                         continue
-            #                     next_r = xy1(flit_details,i) if (algo == 0) else yx1(flit_details,i)
-            #                     r.update(next_r,all_routers)
-            #                     r.inject(flit_details)
-            #                     flit_time.append(total_cycles_taken(all_routers,flit_details,algo))
-
-            #                 else:
-            #                     if(src>des):
-            #                         i-=1
-            #                         continue
-            #                     r.inject(flit_details)
-            #                     flit_time.append(total_cycles_taken(all_routers,flit_details,algo))
-            
-            #             i -= 1
-            #         i=0
-            #         while(i <=8):
-            #             r = all_routers[i]
-
-            #             if(i != src):
-            #                 if(not r.isempty()):
-            #                     curr_flit_details = r.getflit()
-            #                     if(curr_flit_details[0]<=curr_flit_details[1]):
-            #                         i+=1
-            #                         continue
-            #                     next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-            #                     r.update(next_r,all_routers)
-
-            #             else:
-            #                 if(not r.isempty()):
-            #                     if(src<=des):
-            #                         i+=1
-            #                         continue
-            #                     next_r = xy1(flit_details,i) if (algo == 0) else yx1(flit_details,i)
-            #                     r.update(next_r,all_routers)
-            #                     r.inject(flit_details)
-            #                     flit_time.append(total_cycles_taken(all_routers,flit_details,algo))
-            #                 else:
-            #                     if(src<=des):
-            #                         i+=1
-            #                         continue
-            #                     r.inject(flit_details)
-            #                     flit_time.append(total_cycles_taken(all_routers,flit_details,algo))
-            
-            #             i += 1
-                    
-            #     else:
-            #         i = 8
-            #         while(i >= 0):
-            #             r = all_routers[i]
-            #             if(not r.isempty()):
-            #                 flit_details = r.getflit() #returns a list
-            #                 if(flit_details[0]>flit_details[1]):
-            #                     i-=1
-            #                     continue
-                            
-            #                 if(r.is_destination_flit(flit_details[1])):
-            #                     r.receive()
-                
-            #                 else:
-            #                     next_r = xy1(flit_details,i) if (algo == 0) else yx1(flit_details,i)
-            #                     r.update(next_r,all_routers)
-                                    
-            #             i -= 1
-
-            #         i = 0
-            #         while(i <= 8):
-            #             r = all_routers[i]
-            #             if(not r.isempty()):
-            #                 flit_details = r.getflit() #returns a list
-            #                 if(flit_details[0]<=flit_details[1]):
-            #                     i+=1
-            #                     continue
-
-            #                 if(r.is_destination_flit(flit_details[1])):
-            #                     r.receive()
-                
-            #                 else:
-            #                     next_r = xy1(flit_details,i) if (algo == 0) else yx1(flit_details,i)
-            #                     r.update(next_r,all_routers)
-                                
-            #             i += 1
-                        
-            #     j = 0 
-            #     while j <= 8:
-            #         try:
-            #             print(f"At clock cycle: {clock} = {all_routers[j]}")
-            #         except Exception as e:
-            #             print(f"Error printing router details: {str(e)}")
-            #         j += 1
-
-            #     print("---------------------------------------------------------------------------------------------------------\n")
-
-            #     clock += 1
-            #     total += period
-
             
     sys.stdout = sys.__stdout__
 
