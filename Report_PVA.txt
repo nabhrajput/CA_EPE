@@ -1,0 +1,82 @@
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 1, Router ID: 1, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 4.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 2, Router ID: 1, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 4.0. Flit Type: Body Flit
+At clock cycle: 2, Router ID: 1, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 8.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 3, Router ID: 1, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 4.0. Flit Type: Tail Flit
+At clock cycle: 3, Router ID: 1, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 8.0. Flit Type: Body Flit
+At clock cycle: 3, Router ID: 1, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 12.0. Flit Type: Head Flit
+At clock cycle: 3, Router ID: 7, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 4.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 4, Router ID: 1, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 8.0. Flit Type: Tail Flit
+At clock cycle: 4, Router ID: 1, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 12.0. Flit Type: Body Flit
+At clock cycle: 4, Router ID: 4, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 16.0. Flit Type: Head Flit
+At clock cycle: 4, Router ID: 7, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 4.0. Flit Type: Body Flit
+At clock cycle: 4, Router ID: 7, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 8.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 5, Router ID: 1, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 12.0. Flit Type: Tail Flit
+At clock cycle: 5, Router ID: 4, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 16.0. Flit Type: Body Flit
+At clock cycle: 5, Router ID: 4, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 20.0. Flit Type: Head Flit
+At clock cycle: 5, Router ID: 7, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 4.0. Flit Type: Tail Flit
+At clock cycle: 5, Router ID: 7, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 8.0. Flit Type: Body Flit
+At clock cycle: 5, Router ID: 7, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 12.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 6, Router ID: 4, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 16.0. Flit Type: Tail Flit
+At clock cycle: 6, Router ID: 4, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 20.0. Flit Type: Body Flit
+At clock cycle: 6, Router ID: 4, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 24.0. Flit Type: Head Flit
+At clock cycle: 6, Router ID: 7, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 8.0. Flit Type: Tail Flit
+At clock cycle: 6, Router ID: 7, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 12.0. Flit Type: Body Flit
+At clock cycle: 6, Router ID: 8, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 16.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 7, Router ID: 4, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 20.0. Flit Type: Tail Flit
+At clock cycle: 7, Router ID: 4, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 24.0. Flit Type: Body Flit
+At clock cycle: 7, Router ID: 7, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 32.0. Flit Type: Head Flit
+At clock cycle: 7, Router ID: 7, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 12.0. Flit Type: Tail Flit
+At clock cycle: 7, Router ID: 8, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 16.0. Flit Type: Body Flit
+At clock cycle: 7, Router ID: 8, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 20.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 8, Router ID: 4, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 24.0. Flit Type: Tail Flit
+At clock cycle: 8, Router ID: 7, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 32.0. Flit Type: Body Flit
+At clock cycle: 8, Router ID: 7, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 36.0. Flit Type: Head Flit
+At clock cycle: 8, Router ID: 8, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 16.0. Flit Type: Tail Flit
+At clock cycle: 8, Router ID: 8, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 20.0. Flit Type: Body Flit
+At clock cycle: 8, Router ID: 8, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 24.0. Flit Type: Head Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 9, Router ID: 5, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 28.0. Flit Type: Head Flit
+At clock cycle: 9, Router ID: 7, The flit is traveling from Source 1 to destination 7 at input_buffer and its delay is 28.0. Flit Type: Tail Flit
+At clock cycle: 9, Router ID: 7, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 36.0. Flit Type: Body Flit
+At clock cycle: 9, Router ID: 8, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 20.0. Flit Type: Tail Flit
+At clock cycle: 9, Router ID: 8, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 24.0. Flit Type: Body Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 10, Router ID: 5, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 28.0. Flit Type: Body Flit
+At clock cycle: 10, Router ID: 5, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 32.0. Flit Type: Head Flit
+At clock cycle: 10, Router ID: 7, The flit is traveling from Source 1 to destination 7 at switch_allocator and its delay is 32.0. Flit Type: Tail Flit
+At clock cycle: 10, Router ID: 8, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 24.0. Flit Type: Tail Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 11, Router ID: 5, The flit is traveling from Source 7 to destination 5 at input_buffer and its delay is 28.0. Flit Type: Tail Flit
+At clock cycle: 11, Router ID: 5, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 32.0. Flit Type: Body Flit
+At clock cycle: 11, Router ID: 5, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 36.0. Flit Type: Head Flit
+At clock cycle: 11, Router ID: 7, The flit is traveling from Source 1 to destination 7 at Crossbar and its delay is 36.0. Flit Type: Tail Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 12, Router ID: 5, The flit is traveling from Source 7 to destination 5 at switch_allocator and its delay is 32.0. Flit Type: Tail Flit
+At clock cycle: 12, Router ID: 5, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 36.0. Flit Type: Body Flit
+---------------------------------------------------------------------------------------------------------
+
+At clock cycle: 13, Router ID: 5, The flit is traveling from Source 7 to destination 5 at Crossbar and its delay is 36.0. Flit Type: Tail Flit
+---------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------
+
