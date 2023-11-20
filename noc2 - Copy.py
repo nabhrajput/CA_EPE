@@ -39,7 +39,8 @@ try:
                     s += f"CrossBar Value : None \n"
                 return s
 
-            def inject(self,flit_details):
+            def inject(self,flit_details,period):
+                flit_details[4] += period
                 self.input_buffer.append(flit_details)
 
             def receive(self,period):
@@ -360,7 +361,7 @@ try:
 
                                                 
                         while(len(flits_on_this_router) != 0):
-                            r.inject(flits_on_this_router.pop(0))
+                            r.inject(flits_on_this_router.pop(0),period)
 
                         i -=1 
 
