@@ -1,8 +1,7 @@
 import txt_Converter as conv
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 import sys
 import random
+import matplotlib.pyplot as plt
 
 try:
     with open('Report_PVA.txt', 'w') as report_file:
@@ -43,23 +42,37 @@ try:
                 return s
 
             def inject(self,flit_details,period):
-                flit_details[4] += period
                 self.input_buffer.append(flit_details)
                 self.processing_element += 1
 
-            def receive(self,period,recieved_flits):
+            def receive(self,period,received_flits,dropped_list,clock):
                 if(self.crossbar != []):
-                    val = self.crossbar.pop(0)
-                    self.processing_element += 1
-                    received_flits.append(val)
+                    if(period < self.crossbar_delay): #drop
+                        val = self.crossbar.pop(0)
+                        dropped_list.append([clock,self.router_id,2,val])
+                    else:
+                        val = self.crossbar.pop(0)
+                        val[4] += period
+                        self.processing_element += 1
+                        received_flits.append(val)
+
                 if(self.switch_allocator != []):
-                    val = self.switch_allocator.pop(0)
-                    val[4] += period
-                    self.crossbar.append(val)
+                    if(period < self.switch_allocator_delay): #drop
+                        val = self.switch_allocator.pop(0)
+                        dropped_list.append([clock,self.router_id,1,val])
+                    else:
+                        val = self.switch_allocator.pop(0)
+                        val[4] += period
+                        self.crossbar.append(val)
+
                 if(self.input_buffer != []):
-                    val = self.input_buffer.pop(0)
-                    val[4] += period
-                    self.switch_allocator.append(val)
+                    if(period < self.buffer_delay): #drop
+                        val = self.input_buffer.pop(0)
+                        dropped_list.append([clock,self.router_id,0,val])
+                    else:
+                        val = self.input_buffer.pop(0)
+                        val[4] += period
+                        self.switch_allocator.append(val)
 
             def is_ready_to_receive(self,des):
                 if(int(self.router_id) == int(des) and self.crossbar != []):
@@ -74,26 +87,37 @@ try:
                 if(self.input_buffer != []):
                     return self.input_buffer[0]
 
-            def update(self,next_id,allrouter,period,links):
+            def update(self,next_id,allrouter,period,links,dropped_list,clock):
                 nextrouter = allrouter[next_id]
                 if(len(self.crossbar) != 0):
-                    val = self.crossbar.pop(0)
-                    val[4] += period #delay
-                    nextrouter.input_buffer.append(val)
-                    s = str(self.router_id) + str(nextrouter.router_id)
-                    s = ''.join(sorted(s))
-                    links[s] += 1
+                    if(period < self.crossbar_delay): #drop
+                        val = self.crossbar.pop(0)
+                        dropped_list.append([clock,self.router_id,2,val])
+                    else:
+                        val = self.crossbar.pop(0)
+                        val[4] += period #delay
+                        nextrouter.input_buffer.append(val)
+                        s = str(self.router_id) + str(nextrouter.router_id)
+                        s = ''.join(sorted(s))
+                        links[s] += 1
                     
-
                 if(len(self.switch_allocator) != 0):
-                    val = self.switch_allocator.pop(0)
-                    val[4] += period #delay
-                    self.crossbar.append(val)
+                    if(period < self.switch_allocator_delay): #drop
+                        val = self.switch_allocator.pop(0)
+                        dropped_list.append([clock,self.router_id,1,val])
+                    else:
+                        val = self.switch_allocator.pop(0)
+                        val[4] += period #delay
+                        self.crossbar.append(val)
 
                 if(len(self.input_buffer) != 0):
-                    val = self.input_buffer.pop(0)
-                    val[4] += period #delay
-                    self.switch_allocator.append(val)
+                    if(period < self.buffer_delay): #drop
+                        val = self.input_buffer.pop(0)
+                        dropped_list.append([clock,self.router_id,0,val])
+                    else :
+                        val = self.input_buffer.pop(0)
+                        val[4] += period #delay
+                        self.switch_allocator.append(val)
 
             def is_destination_flit(self,des):
                 if(self.router_id == int(des)):
@@ -208,6 +232,33 @@ try:
 
             def check_last_two_digits(temp1, temp2):
                 return temp1[3][-2:] == temp2[3][-2:]
+
+            def link_graph(dic1, dic2):
+                x1_values = list(dic1.keys())
+                y1_values = list(dic1.values())
+                
+                x2_values = list(dic2.keys())
+                y2_values = list(dic2.values())
+
+                fig, axs = plt.subplots(1, 2, figsize=(12, 4.5))
+
+                axs[0].bar(x1_values, y1_values)
+                axs[0].set_ylabel("Flits Sent")
+                axs[0].set_title("Graph of Links vs flits sent")
+                axs[0].set_xticks(range(len(x1_values)))
+                axs[0].set_xticklabels(x1_values, rotation=45, ha='right')  # Rotate labels for better visibility
+                axs[0].tick_params(axis='x', which='major', pad=5)  # Adjust padding between ticks and labels
+                axs[0].set_xlabel("Links", labelpad=7)
+
+                axs[1].bar(x2_values, y2_values)
+                axs[1].set_xlabel("Router ID")
+                axs[1].set_ylabel("Flit Updates")
+                axs[1].set_title("PE Flits")
+                plt.xticks(range(len(x2_values)), x2_values)
+
+                fig.tight_layout()
+                plt.show()
+
             try:
                 flagSarva = 0
                 conv.run()
@@ -297,7 +348,7 @@ try:
             # run_mode = int(input())
 
             algo = 0 # 0 for xy | 1 for yx
-            run_mode = 0 # 0 for PVA | 1 for PVS
+            run_mode = 1 # 0 for PVA | 1 for PVS
 
             num_routers = 9
             buffer_delays = generate_gaussian_delays(mean_delays[0], mean_delays[0]*0.1, num_routers,run_mode)
@@ -307,8 +358,8 @@ try:
             all_routers = {i : Router(i,buffer_delays[i],sa_delays[i],xbar_delays[i]) for i in range(0,9)}
             
             #These line are here so that we can check how the delaysa being assigned
-            # for i in range(0,9):
-            #     print(f"Router ID : {i} with BD = {all_routers[i].buffer_delay} : SA {all_routers[i].switch_allocator_delay} : XD : {all_routers[i].crossbar_delay}")
+            for i in range(0,9):
+                print(f"Router ID : {i} with BD = {all_routers[i].buffer_delay} : SA {all_routers[i].switch_allocator_delay} : XD : {all_routers[i].crossbar_delay}")
             # exit()
 
             period = max(buffer_delay,sa_delay,xbar_delay)
@@ -322,6 +373,7 @@ try:
 
             links = {"01" : 0 ,"12" : 0 ,"03" : 0 ,"14" : 0 ,"25" : 0 ,"34" : 0 ,"45" : 0 ,"36" : 0 ,"47" : 0 ,"58" : 0 ,"67" : 0 ,"78" : 0 }
             received_flits = []
+            dropped_list = []
 
             lastclock = int(traffic_file[len(traffic_file) - 1][0]) #last clock of injection 
             while(clock <= lastclock):
@@ -354,22 +406,22 @@ try:
                     elif(len(all_routers[i].crossbar)!=0):
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
                         if(all_routers[i].is_destination_flit(curr_flit_details[2])):
-                            all_routers[i].receive(period,received_flits)
+                            all_routers[i].receive(period,received_flits,dropped_list,clock)
                         
                         elif(next_r>i):
                             pending.append(all_routers[i])
                         else:
-                            all_routers[i].update(next_r,all_routers,period,links)
+                            all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock)
 
                     else:
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                        all_routers[i].update(next_r,all_routers,period,links)
+                        all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock)
 
 
                 for i in pending:
                     curr_flit_details = i.getflit()
                     next_r = xy1(curr_flit_details,i.router_id) if (algo == 0) else yx1(curr_flit_details,i.router_id)
-                    i.update(next_r,all_routers,period,links)
+                    i.update(next_r,all_routers,period,links,dropped_list,clock)
 
 
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
@@ -414,22 +466,26 @@ try:
                     report_file.write("\n")
                 clock += 1
                 total += period
+
                 #emergency button
-                if(clock == 20):
+                if(clock == 40):
                     print("forcefull stop")
                     exit()
 
-            print(links)
+            formatted_links = {f"{key[0]}<-->{key[1]}": value for key, value in links.items()}   #dup dict just for desired graph axis
+            pe_updates = {}
             for i in range(0,9):
-                print(f"Router ID : {i} with PE updates = {all_routers[i].processing_element}")
+                pe_updates[i] = all_routers[i].processing_element
 
+            print(dropped_list)
             print(received_flits)
             
     sys.stdout = sys.__stdout__
 
     print("Output is stored in a file name : 'Log_File.txt'")
+    print("Report is Generated in a file named : 'Report_PVA.txt'")
 
-    
+    link_graph(formatted_links,pe_updates)
 
 except Exception as e:
     print(f"Error printing output location: {str(e)}")
