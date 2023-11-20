@@ -16,6 +16,7 @@ try:
                 self.buffer_delay = bd
                 self.switch_allocator_delay = sd
                 self.crossbar_delay = cd
+                self.processing_element = 0
 
             def isempty(self):
                 if((len(self.input_buffer) == 0) and (len(self.switch_allocator) == 0) and (len(self.crossbar) == 0)):
@@ -42,10 +43,12 @@ try:
             def inject(self,flit_details,period):
                 flit_details[4] += period
                 self.input_buffer.append(flit_details)
+                self.processing_element += 1
 
             def receive(self,period):
                 if(self.crossbar != []):
                     self.crossbar.pop(0)
+                    self.processing_element += 1
                 if(self.switch_allocator != []):
                     val = self.switch_allocator.pop(0)
                     val[4] += period
@@ -68,12 +71,16 @@ try:
                 if(self.input_buffer != []):
                     return self.input_buffer[0]
 
-            def update(self,next_id,allrouter,period):
+            def update(self,next_id,allrouter,period,links):
                 nextrouter = allrouter[next_id]
                 if(len(self.crossbar) != 0):
                     val = self.crossbar.pop(0)
                     val[4] += period #delay
                     nextrouter.input_buffer.append(val)
+                    s = str(self.router_id) + str(nextrouter.router_id)
+                    s = ''.join(sorted(s))
+                    links[s] += 1
+                    
 
                 if(len(self.switch_allocator) != 0):
                     val = self.switch_allocator.pop(0)
@@ -299,6 +306,8 @@ try:
             clock_wise_flits = {} # keep a record what are flits to be added at a particular clock
             clock = 1
 
+            links = {"01" : 0 ,"12" : 0 ,"03" : 0 ,"14" : 0 ,"25" : 0 ,"34" : 0 ,"45" : 0 ,"36" : 0 ,"47" : 0 ,"58" : 0 ,"67" : 0 ,"78" : 0 }
+
             lastclock = int(traffic_file[len(traffic_file) - 1][0]) #last clock of injection 
             while(clock <= lastclock):
                 flits_on_that_clock = []
@@ -335,17 +344,17 @@ try:
                         elif(next_r>i):
                             pending.append(all_routers[i])
                         else:
-                            all_routers[i].update(next_r,all_routers,period)
+                            all_routers[i].update(next_r,all_routers,period,links)
 
                     else:
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                        all_routers[i].update(next_r,all_routers,period)
+                        all_routers[i].update(next_r,all_routers,period,links)
 
 
                 for i in pending:
                     curr_flit_details = i.getflit()
                     next_r = xy1(curr_flit_details,i.router_id) if (algo == 0) else yx1(curr_flit_details,i.router_id)
-                    i.update(next_r,all_routers,period)
+                    i.update(next_r,all_routers,period,links)
 
 
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
@@ -382,6 +391,10 @@ try:
                 if(clock == 20):
                     print("forcefull stop")
                     exit()
+
+            print(links)
+            for i in range(0,9):
+                print(f"Router ID : {i} with PE updates = {all_routers[i].processing_element}")
             
     sys.stdout = sys.__stdout__
 
