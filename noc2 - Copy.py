@@ -42,14 +42,16 @@ try:
             def inject(self,flit_details):
                 self.input_buffer.append(flit_details)
 
-            def receive(self):
+            def receive(self,period):
                 if(self.crossbar != []):
                     self.crossbar.pop(0)
                 if(self.switch_allocator != []):
                     val = self.switch_allocator.pop(0)
+                    val[4] += period
                     self.crossbar.append(val)
                 if(self.input_buffer != []):
                     val = self.input_buffer.pop(0)
+                    val[4] += period
                     self.switch_allocator.append(val)
 
             def is_ready_to_receive(self,des):
@@ -65,18 +67,21 @@ try:
                 if(self.input_buffer != []):
                     return self.input_buffer[0]
 
-            def update(self,next_id,allrouter):
+            def update(self,next_id,allrouter,period):
                 nextrouter = allrouter[next_id]
                 if(len(self.crossbar) != 0):
                     val = self.crossbar.pop(0)
+                    val[4] += period #delay
                     nextrouter.input_buffer.append(val)
 
                 if(len(self.switch_allocator) != 0):
                     val = self.switch_allocator.pop(0)
+                    val[4] += period #delay
                     self.crossbar.append(val)
 
                 if(len(self.input_buffer) != 0):
                     val = self.input_buffer.pop(0)
+                    val[4] += period #delay
                     self.switch_allocator.append(val)
 
             def is_destination_flit(self,des):
@@ -194,7 +199,11 @@ try:
                         temp2 = lines[i + 1].strip().split()
                         temp3 = lines[i + 2].strip().split()
 
-                        if len(temp1) != 4 or len(temp2) != 4 or len(temp3) != 4:
+                        temp1.append(0)
+                        temp2.append(0)
+                        temp3.append(0)
+
+                        if len(temp1) != 5 or len(temp2) != 5 or len(temp3) != 5:
                             print(f"Error in lines {line_number}, {line_number + 1}, {line_number + 2}: Invalid number of elements in the line.")
                             flagSarva = 1
 
@@ -307,6 +316,7 @@ try:
                 4. in case of backward flow it is done in the first loop itself 
                 5. We have made injection as an independent process , we'll inject new flits when all the updatation is done (parallel injection enabled)
                 '''
+            
             clock = 1 #defining the clock
             while(clock <= lastclock or (not all_empty(all_routers))):
                 pending=[]
@@ -319,22 +329,22 @@ try:
                     elif(len(all_routers[i].crossbar)!=0):
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
                         if(all_routers[i].is_destination_flit(curr_flit_details[2])):
-                            all_routers[i].receive()
+                            all_routers[i].receive(period)
                         
                         elif(next_r>i):
                             pending.append(all_routers[i])
                         else:
-                            all_routers[i].update(next_r,all_routers)
+                            all_routers[i].update(next_r,all_routers,period)
 
                     else:
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                        all_routers[i].update(next_r,all_routers)
+                        all_routers[i].update(next_r,all_routers,period)
 
 
                 for i in pending:
                     curr_flit_details = i.getflit()
                     next_r = xy1(curr_flit_details,i.router_id) if (algo == 0) else yx1(curr_flit_details,i.router_id)
-                    i.update(next_r,all_routers)
+                    i.update(next_r,all_routers,period)
 
 
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
