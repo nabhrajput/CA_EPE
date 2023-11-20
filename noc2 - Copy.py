@@ -5,6 +5,8 @@ import sys
 import random
 
 try:
+    with open('Report_PVA.txt', 'w') as report_file:
+        pass
     with open('Log_File.txt', 'w') as output_file:
         sys.stdout = output_file
         class Router:
@@ -45,10 +47,11 @@ try:
                 self.input_buffer.append(flit_details)
                 self.processing_element += 1
 
-            def receive(self,period):
+            def receive(self,period,recieved_flits):
                 if(self.crossbar != []):
-                    self.crossbar.pop(0)
+                    val = self.crossbar.pop(0)
                     self.processing_element += 1
+                    received_flits.append(val)
                 if(self.switch_allocator != []):
                     val = self.switch_allocator.pop(0)
                     val[4] += period
@@ -294,7 +297,7 @@ try:
             # run_mode = int(input())
 
             algo = 0 # 0 for xy | 1 for yx
-            run_mode = 1 # 0 for PVA | 1 for PVS
+            run_mode = 0 # 0 for PVA | 1 for PVS
 
             num_routers = 9
             buffer_delays = generate_gaussian_delays(mean_delays[0], mean_delays[0]*0.1, num_routers,run_mode)
@@ -318,6 +321,7 @@ try:
             clock = 1
 
             links = {"01" : 0 ,"12" : 0 ,"03" : 0 ,"14" : 0 ,"25" : 0 ,"34" : 0 ,"45" : 0 ,"36" : 0 ,"47" : 0 ,"58" : 0 ,"67" : 0 ,"78" : 0 }
+            received_flits = []
 
             lastclock = int(traffic_file[len(traffic_file) - 1][0]) #last clock of injection 
             while(clock <= lastclock):
@@ -350,7 +354,7 @@ try:
                     elif(len(all_routers[i].crossbar)!=0):
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
                         if(all_routers[i].is_destination_flit(curr_flit_details[2])):
-                            all_routers[i].receive(period)
+                            all_routers[i].receive(period,received_flits)
                         
                         elif(next_r>i):
                             pending.append(all_routers[i])
@@ -405,7 +409,7 @@ try:
                                 flit_type = decode_flit_type(flit_details[3])
 
                                 report_file.write(f"At clock cycle: {clock}, Router ID: {router_id}, ")
-                                report_file.write(f"The flit is traveling from Source {source} to destination {destination} at {stage_name} and its delay is {delay}. Flit Type: {flit_type}\n")
+                                report_file.write(f"The {flit_type} is traveling from Source {source} to destination {destination} at {stage_name} and its delay is {delay}.\n")
                     report_file.write("---------------------------------------------------------------------------------------------------------\n")
                     report_file.write("\n")
                 clock += 1
@@ -418,6 +422,8 @@ try:
             print(links)
             for i in range(0,9):
                 print(f"Router ID : {i} with PE updates = {all_routers[i].processing_element}")
+
+            print(received_flits)
             
     sys.stdout = sys.__stdout__
 
