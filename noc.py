@@ -161,6 +161,16 @@ try:
                     return "Tail Flit"
                 else:
                     return "Unknown Flit Type"
+            def decode_PE_type(last_two_bits):
+                # last_two_bits = flit[-2:]
+                if last_two_bits == 0:
+                    return "Input_Buffer"
+                elif last_two_bits == 1:
+                    return "Switch Allocator"
+                elif last_two_bits == 2:
+                    return "Crossbar"
+                else:
+                    return "Unknown Flit Type"
 
             def generate_gaussian_delays(mean, std_dev, count,run_mode):
                 if(run_mode == 0 ):
@@ -311,6 +321,7 @@ try:
                                 tail += 1
                                 break
                 f = plt.figure()
+                f.set_figheight(200)
                 plt.bar(x, y)
                 plt.xlabel('Flit Type')
                 plt.ylabel('Received Flits')
@@ -525,12 +536,12 @@ try:
                                 report_file.write(f"At clock cycle: {clock}, Router ID: {router_id}, ")
                                 report_file.write(f"The {flit_type} is traveling from Source {source} to destination {destination} at {stage_name} and its delay is {delay}.\n")
                                 for delayed_item in delayed_list:
-                                    if delayed_item[0] == clock and delayed_item[1] == router_id and delayed_item[2] == stage:
+                                    if delayed_item[0] == clock and delayed_item[1] == router_id:
                                         delayed_flit = delayed_item[3]
                                         report_file.write(f"At clock cycle: {clock}, Router ID: {router_id}, ")
-                                        report_file.write(f"The {flit_type} traveling from Source {source} to destination {destination} is being delayed at {stage_name} by a updated delay of {delayed_flit[4]} seconds\n")
+                                        report_file.write(f"The {flit_type} traveling from Source {source} to destination {destination} is being delayed at {decode_PE_type(delayed_item[2])}\n")
 
-                    report_file.write("---------------------------------------------------------------------------------------------------------\n")
+                    report_file.write("-----------------------------------------------------NEW CYCLE----------------------------------------------------\n")
                     report_file.write("\n")
                 clock += 1
                 total += period
