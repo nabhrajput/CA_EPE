@@ -321,7 +321,6 @@ try:
                                 tail += 1
                                 break
                 f = plt.figure()
-                f.set_figheight(200)
                 plt.bar(x, y)
                 plt.xlabel('Flit Type')
                 plt.ylabel('Received Flits')
