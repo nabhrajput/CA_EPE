@@ -1,12 +1,12 @@
-Router ID : 0 with BD = 0.950869898686632 : SA 2.1533381462030787 : XD : 4.460319510877945
-Router ID : 1 with BD = 1.0046581534013979 : SA 1.753983412858059 : XD : 4.419358585525274
-Router ID : 2 with BD = 1.1876739996680572 : SA 1.9871286638747998 : XD : 3.840947032669928
-Router ID : 3 with BD = 1.0536060703352796 : SA 1.6156535342317604 : XD : 3.8146809409189038
-Router ID : 4 with BD = 1.0055384858006151 : SA 2.163877518078334 : XD : 3.541857583114735
-Router ID : 5 with BD = 0.939230470122864 : SA 1.8118068239204381 : XD : 4.60718279231759
-Router ID : 6 with BD = 1.0458907014595176 : SA 2.4062131786717496 : XD : 4.199055864303681
-Router ID : 7 with BD = 0.7461681323038472 : SA 1.926527499914853 : XD : 4.0381131764492535
-Router ID : 8 with BD = 0.91453823844163 : SA 2.051737668562077 : XD : 3.83589826075553
+Router ID : 0 with BD = 1.0849212795577796 : SA 2.210131338680732 : XD : 4.392239792538046
+Router ID : 1 with BD = 0.9663383605483487 : SA 2.2438638231838954 : XD : 4.489284391412101
+Router ID : 2 with BD = 1.0100733683202896 : SA 2.16146183959635 : XD : 4.1652136274074385
+Router ID : 3 with BD = 0.9303607081727554 : SA 2.05568716190628 : XD : 3.9188826993871904
+Router ID : 4 with BD = 1.0853258028979242 : SA 1.953380423794208 : XD : 4.1735361550526635
+Router ID : 5 with BD = 1.1892435798863783 : SA 2.138415495527714 : XD : 3.1298237925521777
+Router ID : 6 with BD = 1.0068777471679697 : SA 1.8716834185825055 : XD : 3.4586994728499514
+Router ID : 7 with BD = 1.0564318357319245 : SA 1.9437557740889366 : XD : 3.4583124957157376
+Router ID : 8 with BD = 0.8752277986942113 : SA 2.0902006312593118 : XD : 4.259524809245138
 At clock cycle: 1 = Router ID : 0 
 Input Buffer Value : None 
 Switch Allocator Value : None 
@@ -278,12 +278,12 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 6 = Router ID : 7 
-Input Buffer Value : [['5', '7', '5', '00000000000000000000000000000010', 0]] 
-Switch Allocator Value : [['4', '7', '5', '00000000000000000000000000000001', 4.0]] 
-CrossBar Value : [['3', '7', '5', '00000000000010100000000000010000', 8.0]] 
+Input Buffer Value : None 
+Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 4.0]] 
+CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 8.0]] 
 
 At clock cycle: 6 = Router ID : 8 
-Input Buffer Value : None 
+Input Buffer Value : [['3', '7', '5', '00000000000010100000000000010000', 12.0]] 
 Switch Allocator Value : None 
 CrossBar Value : None 
 
@@ -326,12 +326,12 @@ CrossBar Value : None
 
 At clock cycle: 7 = Router ID : 7 
 Input Buffer Value : None 
-Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 8.0]] 
-CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 12.0]] 
+Switch Allocator Value : None 
+CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 8.0]] 
 
 At clock cycle: 7 = Router ID : 8 
-Input Buffer Value : [['3', '7', '5', '00000000000010100000000000010000', 16.0]] 
-Switch Allocator Value : None 
+Input Buffer Value : [['4', '7', '5', '00000000000000000000000000000001', 12.0]] 
+Switch Allocator Value : [['3', '7', '5', '00000000000010100000000000010000', 16.0]] 
 CrossBar Value : None 
 
 ---------------------------------------------------------------------------------------------------------
@@ -359,7 +359,7 @@ CrossBar Value : None
 At clock cycle: 8 = Router ID : 4 
 Input Buffer Value : None 
 Switch Allocator Value : [['2', '1', '7', '00000000000000000000000000000001', 24.0]] 
-CrossBar Value : None 
+CrossBar Value : [['1', '1', '7', '00000000000011100000000000000100', 24.0]] 
 
 At clock cycle: 8 = Router ID : 5 
 Input Buffer Value : None 
@@ -372,14 +372,14 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 8 = Router ID : 7 
-Input Buffer Value : [['1', '1', '7', '00000000000011100000000000000100', 28.0]] 
-Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 8.0]] 
-CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 12.0]] 
+Input Buffer Value : None 
+Switch Allocator Value : None 
+CrossBar Value : None 
 
 At clock cycle: 8 = Router ID : 8 
-Input Buffer Value : None 
-Switch Allocator Value : [['3', '7', '5', '00000000000010100000000000010000', 20.0]] 
-CrossBar Value : None 
+Input Buffer Value : [['5', '7', '5', '00000000000000000000000000000010', 12.0]] 
+Switch Allocator Value : [['4', '7', '5', '00000000000000000000000000000001', 16.0]] 
+CrossBar Value : [['3', '7', '5', '00000000000010100000000000010000', 20.0]] 
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -404,8 +404,8 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 9 = Router ID : 4 
-Input Buffer Value : [['3', '1', '7', '00000000000000000000000000000010', 24.0]] 
-Switch Allocator Value : None 
+Input Buffer Value : None 
+Switch Allocator Value : [['3', '1', '7', '00000000000000000000000000000010', 28.0]] 
 CrossBar Value : [['2', '1', '7', '00000000000000000000000000000001', 28.0]] 
 
 At clock cycle: 9 = Router ID : 5 
@@ -419,14 +419,14 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 9 = Router ID : 7 
-Input Buffer Value : None 
-Switch Allocator Value : [['1', '1', '7', '00000000000011100000000000000100', 36.0]] 
-CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 16.0]] 
+Input Buffer Value : [['1', '1', '7', '00000000000011100000000000000100', 32.0]] 
+Switch Allocator Value : None 
+CrossBar Value : None 
 
 At clock cycle: 9 = Router ID : 8 
-Input Buffer Value : [['4', '7', '5', '00000000000000000000000000000001', 20.0]] 
-Switch Allocator Value : None 
-CrossBar Value : [['3', '7', '5', '00000000000010100000000000010000', 24.0]] 
+Input Buffer Value : [['5', '7', '5', '00000000000000000000000000000010', 12.0]] 
+Switch Allocator Value : [['4', '7', '5', '00000000000000000000000000000001', 16.0]] 
+CrossBar Value : [['3', '7', '5', '00000000000010100000000000010000', 20.0]] 
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -453,7 +453,7 @@ CrossBar Value : None
 At clock cycle: 10 = Router ID : 4 
 Input Buffer Value : None 
 Switch Allocator Value : [['3', '1', '7', '00000000000000000000000000000010', 28.0]] 
-CrossBar Value : None 
+CrossBar Value : [['2', '1', '7', '00000000000000000000000000000001', 28.0]] 
 
 At clock cycle: 10 = Router ID : 5 
 Input Buffer Value : [['3', '7', '5', '00000000000010100000000000010000', 28.0]] 
@@ -466,14 +466,14 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 10 = Router ID : 7 
-Input Buffer Value : [['2', '1', '7', '00000000000000000000000000000001', 32.0]] 
+Input Buffer Value : None 
 Switch Allocator Value : [['1', '1', '7', '00000000000011100000000000000100', 36.0]] 
-CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 16.0]] 
+CrossBar Value : None 
 
 At clock cycle: 10 = Router ID : 8 
 Input Buffer Value : None 
-Switch Allocator Value : [['4', '7', '5', '00000000000000000000000000000001', 24.0]] 
-CrossBar Value : None 
+Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 20.0]] 
+CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 24.0]] 
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -500,7 +500,7 @@ CrossBar Value : None
 At clock cycle: 11 = Router ID : 4 
 Input Buffer Value : None 
 Switch Allocator Value : None 
-CrossBar Value : [['3', '1', '7', '00000000000000000000000000000010', 32.0]] 
+CrossBar Value : [['3', '1', '7', '00000000000000000000000000000010', 36.0]] 
 
 At clock cycle: 11 = Router ID : 5 
 Input Buffer Value : None 
@@ -513,14 +513,14 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 11 = Router ID : 7 
-Input Buffer Value : None 
-Switch Allocator Value : [['2', '1', '7', '00000000000000000000000000000001', 40.0]] 
-CrossBar Value : [['1', '1', '7', '00000000000011100000000000000100', 44.0]] 
+Input Buffer Value : [['2', '1', '7', '00000000000000000000000000000001', 36.0]] 
+Switch Allocator Value : None 
+CrossBar Value : [['1', '1', '7', '00000000000011100000000000000100', 40.0]] 
 
 At clock cycle: 11 = Router ID : 8 
-Input Buffer Value : [['5', '7', '5', '00000000000000000000000000000010', 24.0]] 
-Switch Allocator Value : None 
-CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 28.0]] 
+Input Buffer Value : None 
+Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 20.0]] 
+CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 24.0]] 
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -547,7 +547,7 @@ CrossBar Value : None
 At clock cycle: 12 = Router ID : 4 
 Input Buffer Value : None 
 Switch Allocator Value : None 
-CrossBar Value : None 
+CrossBar Value : [['3', '1', '7', '00000000000000000000000000000010', 36.0]] 
 
 At clock cycle: 12 = Router ID : 5 
 Input Buffer Value : [['4', '7', '5', '00000000000000000000000000000001', 32.0]] 
@@ -560,14 +560,14 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 12 = Router ID : 7 
-Input Buffer Value : [['3', '1', '7', '00000000000000000000000000000010', 36.0]] 
+Input Buffer Value : None 
 Switch Allocator Value : [['2', '1', '7', '00000000000000000000000000000001', 40.0]] 
-CrossBar Value : [['1', '1', '7', '00000000000011100000000000000100', 44.0]] 
+CrossBar Value : None 
 
 At clock cycle: 12 = Router ID : 8 
 Input Buffer Value : None 
-Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 28.0]] 
-CrossBar Value : None 
+Switch Allocator Value : None 
+CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 28.0]] 
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -599,7 +599,7 @@ CrossBar Value : None
 At clock cycle: 13 = Router ID : 5 
 Input Buffer Value : None 
 Switch Allocator Value : [['4', '7', '5', '00000000000000000000000000000001', 36.0]] 
-CrossBar Value : [['3', '7', '5', '00000000000010100000000000010000', 36.0]] 
+CrossBar Value : None 
 
 At clock cycle: 13 = Router ID : 6 
 Input Buffer Value : None 
@@ -607,14 +607,14 @@ Switch Allocator Value : None
 CrossBar Value : None 
 
 At clock cycle: 13 = Router ID : 7 
-Input Buffer Value : None 
-Switch Allocator Value : [['3', '1', '7', '00000000000000000000000000000010', 40.0]] 
-CrossBar Value : [['2', '1', '7', '00000000000000000000000000000001', 48.0]] 
+Input Buffer Value : [['3', '1', '7', '00000000000000000000000000000010', 44.0]] 
+Switch Allocator Value : None 
+CrossBar Value : [['2', '1', '7', '00000000000000000000000000000001', 44.0]] 
 
 At clock cycle: 13 = Router ID : 8 
 Input Buffer Value : None 
 Switch Allocator Value : None 
-CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 32.0]] 
+CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 28.0]] 
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -655,8 +655,8 @@ CrossBar Value : None
 
 At clock cycle: 14 = Router ID : 7 
 Input Buffer Value : None 
-Switch Allocator Value : [['3', '1', '7', '00000000000000000000000000000010', 40.0]] 
-CrossBar Value : [['2', '1', '7', '00000000000000000000000000000001', 48.0]] 
+Switch Allocator Value : [['3', '1', '7', '00000000000000000000000000000010', 48.0]] 
+CrossBar Value : None 
 
 At clock cycle: 14 = Router ID : 8 
 Input Buffer Value : None 
@@ -693,7 +693,7 @@ CrossBar Value : None
 At clock cycle: 15 = Router ID : 5 
 Input Buffer Value : None 
 Switch Allocator Value : [['5', '7', '5', '00000000000000000000000000000010', 40.0]] 
-CrossBar Value : [['4', '7', '5', '00000000000000000000000000000001', 40.0]] 
+CrossBar Value : None 
 
 At clock cycle: 15 = Router ID : 6 
 Input Buffer Value : None 
@@ -703,7 +703,7 @@ CrossBar Value : None
 At clock cycle: 15 = Router ID : 7 
 Input Buffer Value : None 
 Switch Allocator Value : None 
-CrossBar Value : [['3', '1', '7', '00000000000000000000000000000010', 48.0]] 
+CrossBar Value : [['3', '1', '7', '00000000000000000000000000000010', 52.0]] 
 
 At clock cycle: 15 = Router ID : 8 
 Input Buffer Value : None 
@@ -750,7 +750,7 @@ CrossBar Value : None
 At clock cycle: 16 = Router ID : 7 
 Input Buffer Value : None 
 Switch Allocator Value : None 
-CrossBar Value : [['3', '1', '7', '00000000000000000000000000000010', 48.0]] 
+CrossBar Value : None 
 
 At clock cycle: 16 = Router ID : 8 
 Input Buffer Value : None 
@@ -787,7 +787,7 @@ CrossBar Value : None
 At clock cycle: 17 = Router ID : 5 
 Input Buffer Value : None 
 Switch Allocator Value : None 
-CrossBar Value : [['5', '7', '5', '00000000000000000000000000000010', 44.0]] 
+CrossBar Value : None 
 
 At clock cycle: 17 = Router ID : 6 
 Input Buffer Value : None 
@@ -806,53 +806,6 @@ CrossBar Value : None
 
 ---------------------------------------------------------------------------------------------------------
 
-At clock cycle: 18 = Router ID : 0 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 1 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 2 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 3 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 4 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 5 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 6 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 7 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
-At clock cycle: 18 = Router ID : 8 
-Input Buffer Value : None 
-Switch Allocator Value : None 
-CrossBar Value : None 
-
----------------------------------------------------------------------------------------------------------
-
 []
-[['1', '1', '7', '00000000000011100000000000000100', 52.0], ['3', '7', '5', '00000000000010100000000000010000', 44.0], ['2', '1', '7', '00000000000000000000000000000001', 56.0], ['4', '7', '5', '00000000000000000000000000000001', 48.0], ['3', '1', '7', '00000000000000000000000000000010', 56.0], ['5', '7', '5', '00000000000000000000000000000010', 52.0]]
-[[4, 1, 2, ['1', '1', '7', '00000000000011100000000000000100', 52.0]], [4, 1, 1, ['2', '1', '7', '00000000000000000000000000000001', 56.0]], [4, 1, 0, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [6, 1, 2, ['2', '1', '7', '00000000000000000000000000000001', 56.0]], [6, 1, 1, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [6, 7, 2, ['3', '7', '5', '00000000000010100000000000010000', 44.0]], [6, 7, 1, ['4', '7', '5', '00000000000000000000000000000001', 48.0]], [6, 7, 0, ['5', '7', '5', '00000000000000000000000000000010', 52.0]], [8, 1, 2, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [8, 7, 2, ['4', '7', '5', '00000000000000000000000000000001', 48.0]], [8, 7, 1, ['5', '7', '5', '00000000000000000000000000000010', 52.0]], [8, 7, 0, ['1', '1', '7', '00000000000011100000000000000100', 52.0]], [10, 7, 2, ['5', '7', '5', '00000000000000000000000000000010', 52.0]], [10, 7, 1, ['1', '1', '7', '00000000000011100000000000000100', 52.0]], [10, 7, 0, ['2', '1', '7', '00000000000000000000000000000001', 56.0]], [12, 7, 2, ['1', '1', '7', '00000000000011100000000000000100', 52.0]], [12, 7, 1, ['2', '1', '7', '00000000000000000000000000000001', 56.0]], [13, 5, 2, ['3', '7', '5', '00000000000010100000000000010000', 44.0]], [14, 7, 2, ['2', '1', '7', '00000000000000000000000000000001', 56.0]], [14, 7, 1, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [15, 5, 2, ['4', '7', '5', '00000000000000000000000000000001', 48.0]], [16, 7, 2, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [17, 5, 2, ['5', '7', '5', '00000000000000000000000000000010', 52.0]]]
+[['1', '1', '7', '00000000000011100000000000000100', 44.0], ['3', '7', '5', '00000000000010100000000000010000', 40.0], ['2', '1', '7', '00000000000000000000000000000001', 48.0], ['4', '7', '5', '00000000000000000000000000000001', 44.0], ['3', '1', '7', '00000000000000000000000000000010', 56.0], ['5', '7', '5', '00000000000000000000000000000010', 48.0]]
+[[4, 1, 2, ['1', '1', '7', '00000000000011100000000000000100', 44.0]], [4, 1, 1, ['2', '1', '7', '00000000000000000000000000000001', 48.0]], [4, 1, 0, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [6, 1, 2, ['2', '1', '7', '00000000000000000000000000000001', 48.0]], [6, 1, 1, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [8, 1, 2, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [8, 4, 2, ['1', '1', '7', '00000000000011100000000000000100', 44.0]], [9, 8, 2, ['3', '7', '5', '00000000000010100000000000010000', 40.0]], [9, 8, 1, ['4', '7', '5', '00000000000000000000000000000001', 44.0]], [9, 8, 0, ['5', '7', '5', '00000000000000000000000000000010', 48.0]], [10, 4, 2, ['2', '1', '7', '00000000000000000000000000000001', 48.0]], [10, 4, 1, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [11, 8, 2, ['4', '7', '5', '00000000000000000000000000000001', 44.0]], [11, 8, 1, ['5', '7', '5', '00000000000000000000000000000010', 48.0]], [12, 4, 2, ['3', '1', '7', '00000000000000000000000000000010', 56.0]], [13, 8, 2, ['5', '7', '5', '00000000000000000000000000000010', 48.0]]]
