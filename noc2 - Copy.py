@@ -4,6 +4,8 @@ import random
 import matplotlib.pyplot as plt
 
 try:
+    with open('Final_Report.txt', 'w') as final_report:
+        pass
     with open('Report_PVA.txt', 'w') as report_file:
         pass
     with open('Log_File.txt', 'w') as output_file:
@@ -464,6 +466,27 @@ try:
                                 report_file.write(f"The {flit_type} is traveling from Source {source} to destination {destination} at {stage_name} and its delay is {delay}.\n")
                     report_file.write("---------------------------------------------------------------------------------------------------------\n")
                     report_file.write("\n")
+                with open('Final_Report.txt', 'a') as final_report:
+                    for router_id, router in all_routers.items():
+                        for stage, stage_name in enumerate(['input_buffer', 'switch_allocator', 'crossbar']):
+                            if not router.isempty() and len(getattr(router, stage_name)) > 0:
+                                flit_details = getattr(router, stage_name)[0]
+                                source = flit_details[1]
+                                destination = flit_details[2]
+                                delay = flit_details[4]
+                                flit_type = decode_flit_type(flit_details[3])
+                                final_report.write(f"At clock cycle: {clock}, Router ID: {router_id}, ")
+                                final_report.write(f"The {flit_type} is traveling from Source {source} to destination {destination} at {stage_name} and its delay is {delay}.\n")
+
+                                # Check if the flit was dropped
+                                dropped_flit = [clock, router_id, stage, flit_details]
+                                if any(item[0] == dropped_flit[0] for item in dropped_list):
+                                    final_report.write("DROP ALERT !! ")
+                                    final_report.write(f"At clock cycle: {clock}, Router ID: {router_id}, Source: {source}, Destination: {destination} ")
+                                    final_report.write(f"The {flit_type} was dropped at {stage_name}.\n")
+                    final_report.write("---------------------------------------------------------------------------------------------------------\n")
+                    final_report.write("\n")
+
                 clock += 1
                 total += period
 
@@ -477,8 +500,8 @@ try:
             for i in range(0,9):
                 pe_updates[i] = all_routers[i].processing_element
 
-            print(dropped_list)
-            print(received_flits)
+            # print(dropped_list)
+            # print(received_flits)
             
     sys.stdout = sys.__stdout__
 
