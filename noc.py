@@ -48,11 +48,11 @@ try:
                     s += f"CrossBar Value : None \n"
                 return s
 
-            def inject(self,flit_details,period):
+            def inject(self,flit_details):
                 self.input_buffer.append(flit_details)
                 self.processing_element += 1
 
-            def receive(self,period,received_flits,dropped_list,clock,delayed_list):
+            def receive(self,period,received_flits,clock,delayed_list):
                 if(self.crossbar != []):
                     self.timePassed_crossbar+=period
                     if((self.crossbar_delay>self.timePassed_crossbar)): #drop
@@ -103,11 +103,11 @@ try:
                 if(self.input_buffer != []):
                     return self.input_buffer[0]
 
-            def update(self,next_id,allrouter,period,links,dropped_list,clock,delayed_list):
+            def update(self,next_id,allrouter,period,links,clock,delayed_list):
                 nextrouter = allrouter[next_id]
                 if(len(self.crossbar) != 0):
                     self.timePassed_crossbar+=period
-                    if((self.crossbar_delay>self.timePassed_crossbar) or len(nextrouter.input_buffer) != 0): #drop
+                    if((self.crossbar_delay>self.timePassed_crossbar)): #drop
                         val = self.crossbar[0]
                         delayed_list.append([clock,self.router_id,2,val])
 
@@ -433,6 +433,8 @@ try:
                 print(f"Router ID : {i} with BD = {all_routers[i].buffer_delay} : SA {all_routers[i].switch_allocator_delay} : XD : {all_routers[i].crossbar_delay}")
             # exit()
 
+            print('\n')
+            
             period = max(buffer_delay,sa_delay,xbar_delay)
             
             total = 0
@@ -444,7 +446,6 @@ try:
 
             links = {"01" : 0 ,"12" : 0 ,"03" : 0 ,"14" : 0 ,"25" : 0 ,"34" : 0 ,"45" : 0 ,"36" : 0 ,"47" : 0 ,"58" : 0 ,"67" : 0 ,"78" : 0 }
             received_flits = []
-            dropped_list = []
             delayed_list = []
 
             lastclock = int(traffic_file[len(traffic_file) - 1][0]) #last clock of injection 
@@ -478,22 +479,22 @@ try:
                     elif(len(all_routers[i].crossbar)!=0):
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
                         if(all_routers[i].is_destination_flit(curr_flit_details[2])):
-                            all_routers[i].receive(period,received_flits,dropped_list,clock,delayed_list)
+                            all_routers[i].receive(period,received_flits,clock,delayed_list)
                         
                         elif(next_r>i):
                             pending.append(all_routers[i])
                         else:
-                            all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock,delayed_list)
+                            all_routers[i].update(next_r,all_routers,period,links,clock,delayed_list)
 
                     else:
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                        all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock,delayed_list)
+                        all_routers[i].update(next_r,all_routers,period,links,clock,delayed_list)
 
 
                 for i in pending:
                     curr_flit_details = i.getflit()
                     next_r = xy1(curr_flit_details,i.router_id) if (algo == 0) else yx1(curr_flit_details,i.router_id)
-                    i.update(next_r,all_routers,period,links,dropped_list,clock,delayed_list)
+                    i.update(next_r,all_routers,period,links,clock,delayed_list)
 
 
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
@@ -509,7 +510,7 @@ try:
 
                                                 
                         while(len(flits_on_this_router) != 0):
-                            r.inject(flits_on_this_router.pop(0),period)
+                            r.inject(flits_on_this_router.pop(0))
 
                         i -=1 
 
@@ -545,6 +546,7 @@ try:
                 clock += 1
                 total += period
 
+
                 #emergency button
                 if(clock == 40):
                     print("forcefull stop")
@@ -555,10 +557,16 @@ try:
             for i in range(0,9):
                 pe_updates[i] = all_routers[i].processing_element
 
-            print(dropped_list)
-            print(received_flits)
-            print(delayed_list)
-            
+            print(f"Clock frequency = {1/period}")
+            print(f"Total Time = {(clock-1)*period}")
+
+
+            print("\n")
+
+            for flits in delayed_list:
+                print(flits)
+
+                 
     sys.stdout = sys.__stdout__
 
     print("Output is stored in a file name : 'Log_File.txt'")
