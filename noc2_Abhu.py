@@ -2,6 +2,7 @@ import txt_Converter as conv
 import sys
 import random
 import matplotlib.pyplot as plt
+import numpy as np
 
 try:
     with open('Report_PVA.txt', 'w') as report_file:
@@ -48,11 +49,13 @@ try:
                 self.input_buffer.append(flit_details)
                 self.processing_element += 1
 
-            def receive(self,period,received_flits,dropped_list,clock):
+            def receive(self,period,received_flits,dropped_list,clock,delayed_list):
                 if(self.crossbar != []):
                     self.timePassed_crossbar+=period
                     if((self.crossbar_delay>self.timePassed_crossbar)): #drop
-                        pass
+                        val = self.crossbar[0]
+                        delayed_list.append([clock,self.router_id,2,val])
+
                     else:
                         val = self.crossbar.pop(0)
                         val[4] += self.timePassed_crossbar
@@ -63,7 +66,9 @@ try:
                 if(self.switch_allocator != []):
                     self.timePassed_switch_allocator+=period
                     if((self.switch_allocator_delay>self.timePassed_switch_allocator) or len(self.crossbar)!=0): #drop
-                        pass
+                        val = self.switch_allocator[0]
+                        delayed_list.append([clock,self.router_id,1,val])
+
                     else:
                         val = self.switch_allocator.pop(0)
                         val[4] += self.timePassed_switch_allocator
@@ -73,7 +78,9 @@ try:
                 if(self.input_buffer != []):
                     self.timePassed_buffer+=period
                     if((self.buffer_delay>self.timePassed_buffer) or len(self.switch_allocator)!=0): #drop
-                        pass
+                        val = self.input_buffer[0]
+                        delayed_list.append([clock,self.router_id,0,val])
+
                     else:
                         val = self.input_buffer.pop(0)
                         val[4] += self.timePassed_buffer
@@ -93,16 +100,15 @@ try:
                 if(self.input_buffer != []):
                     return self.input_buffer[0]
 
-            def update(self,next_id,allrouter,period,links,dropped_list,clock):
+            def update(self,next_id,allrouter,period,links,dropped_list,clock,delayed_list):
                 nextrouter = allrouter[next_id]
                 if(len(self.crossbar) != 0):
                     self.timePassed_crossbar+=period
                     if((self.crossbar_delay>self.timePassed_crossbar) or len(nextrouter.input_buffer) != 0): #drop
-                        # val = self.crossbar.pop(0)
-                        pass
-                        # dropped_list.append([clock,self.router_id,2,val])
+                        val = self.crossbar[0]
+                        delayed_list.append([clock,self.router_id,2,val])
+
                     else:
-                        # self.timePassed_crossbar+=period
                         val = self.crossbar.pop(0)
                         val[4] += self.timePassed_crossbar #delay
                         nextrouter.input_buffer.append(val)
@@ -114,9 +120,9 @@ try:
                 if(len(self.switch_allocator) != 0):
                     self.timePassed_switch_allocator+=period
                     if((self.switch_allocator_delay>self.timePassed_switch_allocator) or len(self.crossbar)!=0): #drop
-                        pass
-                        # val = self.switch_allocator.pop(0)
-                        # dropped_list.append([clock,self.router_id,1,val])
+                        val = self.switch_allocator[0]
+                        delayed_list.append([clock,self.router_id,1,val])
+
                     else:
                         val = self.switch_allocator.pop(0)
                         val[4] += self.timePassed_switch_allocator #delay
@@ -126,9 +132,9 @@ try:
                 if(len(self.input_buffer) != 0):
                     self.timePassed_buffer+=period
                     if((self.buffer_delay>self.timePassed_buffer) or len(self.switch_allocator)!=0): #drop
-                        pass
-                        # val = self.input_buffer.pop(0)
-                        # dropped_list.append([clock,self.router_id,0,val])
+                        val = self.input_buffer[0]
+                        delayed_list.append([clock,self.router_id,0,val])
+
                     else :
                         val = self.input_buffer.pop(0)
                         val[4] += self.timePassed_buffer #delay
@@ -276,6 +282,43 @@ try:
                 plt.savefig("Graph1.png")
                 plt.show()
 
+            def graph2(traffic_file,received_flits):
+                x = []
+                y = []
+                head = 1
+                body = 1
+                tail = 1
+                for i in range(0,len(traffic_file)):
+                    for j in range(0,len(received_flits)):
+                        if(traffic_file[i][0:4] == received_flits[j][0:4]):
+                            flit_type = decode_flit_type(traffic_file[i][3])
+                            if(flit_type == "Head Flit"):
+                                x.append(flit_type + str(head))
+                                y.append(received_flits[j][4])
+                                head += 1
+                                break
+                            elif(flit_type == "Body Flit"):
+                                x.append(flit_type + str(body))
+                                y.append(received_flits[j][4])
+                                body += 1
+                                break
+                            elif(flit_type == "Tail Flit"):
+                                x.append(flit_type + str(tail))
+                                y.append(received_flits[j][4])
+                                tail += 1
+                                break
+                f = plt.figure()
+                f.set_figheight(200)
+                plt.bar(x, y)
+                plt.xlabel('Flit Type')
+                plt.ylabel('Received Flits')
+                plt.title('Bar Graph of Received Flits')
+                for i, value in enumerate(y):
+                    plt.text(i, value + 0.1, str(value), ha='center', va='bottom')
+                plt.yticks(np.arange(0, max(y)+1, 2))
+                plt.savefig("Graph2.png")
+                plt.show()
+
             try:
                 flagSarva = 0
                 conv.run()
@@ -391,6 +434,7 @@ try:
             links = {"01" : 0 ,"12" : 0 ,"03" : 0 ,"14" : 0 ,"25" : 0 ,"34" : 0 ,"45" : 0 ,"36" : 0 ,"47" : 0 ,"58" : 0 ,"67" : 0 ,"78" : 0 }
             received_flits = []
             dropped_list = []
+            delayed_list = []
 
             lastclock = int(traffic_file[len(traffic_file) - 1][0]) #last clock of injection 
             while(clock <= lastclock):
@@ -423,22 +467,22 @@ try:
                     elif(len(all_routers[i].crossbar)!=0):
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
                         if(all_routers[i].is_destination_flit(curr_flit_details[2])):
-                            all_routers[i].receive(period,received_flits,dropped_list,clock)
+                            all_routers[i].receive(period,received_flits,dropped_list,clock,delayed_list)
                         
                         elif(next_r>i):
                             pending.append(all_routers[i])
                         else:
-                            all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock)
+                            all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock,delayed_list)
 
                     else:
                         next_r = xy1(curr_flit_details,i) if (algo == 0) else yx1(curr_flit_details,i)
-                        all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock)
+                        all_routers[i].update(next_r,all_routers,period,links,dropped_list,clock,delayed_list)
 
 
                 for i in pending:
                     curr_flit_details = i.getflit()
                     next_r = xy1(curr_flit_details,i.router_id) if (algo == 0) else yx1(curr_flit_details,i.router_id)
-                    i.update(next_r,all_routers,period,links,dropped_list,clock)
+                    i.update(next_r,all_routers,period,links,dropped_list,clock,delayed_list)
 
 
                 if(clock in clock_wise_flits): # indicator that flit has to be injected in this cycle
@@ -496,6 +540,7 @@ try:
 
             print(dropped_list)
             print(received_flits)
+            print(delayed_list)
             
     sys.stdout = sys.__stdout__
 
@@ -503,6 +548,7 @@ try:
     print("Report is Generated in a file named : 'Report_PVA.txt'")
 
     link_graph(formatted_links,pe_updates)
+    graph2(traffic_file,received_flits)
 
 except Exception as e:
     print(f"Error printing output location: {str(e)}")
