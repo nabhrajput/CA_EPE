@@ -309,16 +309,19 @@ try:
                                 x.append(flit_type + str(head))
                                 y.append(received_flits[j][4])
                                 head += 1
+                                received_flits.pop(j)
                                 break
                             elif(flit_type == "Body Flit"):
                                 x.append(flit_type + str(body))
                                 y.append(received_flits[j][4])
                                 body += 1
+                                received_flits.pop(j)
                                 break
                             elif(flit_type == "Tail Flit"):
                                 x.append(flit_type + str(tail))
                                 y.append(received_flits[j][4])
                                 tail += 1
+                                received_flits.pop(j)
                                 break
                 f = plt.figure()
                 plt.bar(x, y)
